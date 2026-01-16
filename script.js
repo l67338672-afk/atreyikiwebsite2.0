@@ -1,103 +1,97 @@
-/* STARS */
+/* ===== STARS ===== */
 const canvas = document.getElementById("stars");
 const ctx = canvas.getContext("2d");
 
+let w, h;
+let stars = [];
+let pointer = { x: null, y: null };
+
 function resize() {
-  canvas.width = innerWidth;
-  canvas.height = innerHeight;
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
 }
+window.addEventListener("resize", resize);
 resize();
-addEventListener("resize", resize);
 
-const stars = Array.from({ length: 300 }, () => ({
-  x: Math.random() * canvas.width,
-  y: Math.random() * canvas.height,
-  r: Math.random() * 1 + 0.3,
-  vx: (Math.random() - 0.5) * 0.15,
-  vy: (Math.random() - 0.5) * 0.15,
-  ox: 0,
-  oy: 0
-}));
+for (let i = 0; i < 200; i++) {
+  stars.push({
+    x: Math.random() * w,
+    y: Math.random() * h,
+    r: Math.random() * 1.3 + 0.4,
+    vx: (Math.random() - 0.5) * 0.15,
+    vy: (Math.random() - 0.5) * 0.15
+  });
+}
 
-const pointer = { x: -9999, y: -9999 };
-
-addEventListener("mousemove", e => {
+window.addEventListener("mousemove", e => {
   pointer.x = e.clientX;
   pointer.y = e.clientY;
 });
-addEventListener("touchmove", e => {
+
+window.addEventListener("touchmove", e => {
   pointer.x = e.touches[0].clientX;
   pointer.y = e.touches[0].clientY;
 });
 
-function animateStars() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+window.addEventListener("touchend", () => {
+  pointer.x = null;
+  pointer.y = null;
+});
+
+function animate() {
+  ctx.clearRect(0, 0, w, h);
 
   stars.forEach(s => {
+    if (pointer.x !== null) {
+      let dx = s.x - pointer.x;
+      let dy = s.y - pointer.y;
+      let dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 120) {
+        s.x += dx * 0.03;
+        s.y += dy * 0.03;
+      }
+    }
+
     s.x += s.vx;
     s.y += s.vy;
 
-    if (s.x < 0) s.x = canvas.width;
-    if (s.x > canvas.width) s.x = 0;
-    if (s.y < 0) s.y = canvas.height;
-    if (s.y > canvas.height) s.y = 0;
-
-    const dx = s.x - pointer.x;
-    const dy = s.y - pointer.y;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-
-    if (dist < 120) {
-      s.ox += dx / dist;
-      s.oy += dy / dist;
-    }
-
-    s.ox *= 0.9;
-    s.oy *= 0.9;
+    if (s.x < 0) s.x = w;
+    if (s.x > w) s.x = 0;
+    if (s.y < 0) s.y = h;
+    if (s.y > h) s.y = 0;
 
     ctx.beginPath();
-    ctx.arc(s.x + s.ox, s.y + s.oy, s.r, 0, Math.PI * 2);
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
     ctx.fillStyle = "white";
     ctx.fill();
   });
 
-  requestAnimationFrame(animateStars);
+  requestAnimationFrame(animate);
 }
-animateStars();
+animate();
 
-/* NAVIGATION */
-const navBtn = document.getElementById("navigateBtn");
-if (navBtn) navBtn.onclick = () => location.href = "about.html";
-
-/* SCROLL */
-const scrollBtn = document.getElementById("scrollBtn");
-const pass = document.getElementById("password-section");
-if (scrollBtn && pass) {
-  scrollBtn.onclick = () =>
-    pass.scrollIntoView({ behavior: "smooth", block: "center" });
-}
-
-/* FADE */
-const fades = document.querySelectorAll(".fade-section");
-const observer = new IntersectionObserver(entries =>
-  entries.forEach(e => e.isIntersecting && e.target.classList.add("visible"))
-);
-fades.forEach(f => observer.observe(f));
-
-/* PASSWORD */
+/* ===== PASSWORD ===== */
 const unlockBtn = document.getElementById("unlockBtn");
+
 if (unlockBtn) {
   unlockBtn.onclick = () => {
-    const input = document.getElementById("secretPassword");
+    const pass = document.getElementById("secretPassword").value;
     const lock = document.getElementById("lockIcon");
+    const title = document.getElementById("secretTitle");
+    const error = document.getElementById("errorMsg");
 
-    if (input.value === "laddoo") {
-      lock.classList.add("unlocking");
+    if (pass === "laddoo") {
+      lock.textContent = "🔓";
+      title.classList.add("unlocked");
+      error.textContent = "Unlocked 💙";
+
       setTimeout(() => {
-        lock.textContent = "🔓";
-        location.href = "secret.html";
-      }, 700);
+        window.location.href = "final.html";
+      }, 1200);
     } else {
-      alert("SUSRII KI TANNEY PASSWORD NA BERA 😡");
+      error.textContent = "SUSRII KI TANNEY PASSWORD NA BERA 😡";
+      title.classList.add("shake");
+      setTimeout(() => title.classList.remove("shake"), 400);
     }
   };
 }
