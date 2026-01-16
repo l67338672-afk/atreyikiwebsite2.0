@@ -1,0 +1,164 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(ellipse at bottom, #0b1d2a 0%, #020111 100%);
+  color: white;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+/* STARS */
+#stars {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+/* HOME */
+.home {
+  position: relative;
+  z-index: 2;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* BUTTONS */
+.cosmic-btn {
+  padding: 18px 44px;
+  border-radius: 999px;
+  background: rgba(12,25,55,0.6);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.35);
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.soft { opacity: 0.7; margin-left: 6px; }
+.hard { color: #ff6b6b; margin-left: 8px; }
+
+.cta-btn {
+  padding: 12px 28px;
+  border-radius: 999px;
+  background: #0d6efd;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-top: 24px;
+  font-size: 16px;
+}
+
+/* SECTIONS */
+.wide-section {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 100px 20px;
+}
+
+.center {
+  text-align: center;
+}
+
+/* TEXT */
+.wide-section h1 {
+  font-size: 42px;
+  margin-bottom: 24px;
+}
+
+.wide-section h2 {
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
+.wide-section p {
+  max-width: 800px;
+  margin: 20px auto;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+/* IMAGES */
+.wide-section img {
+  width: 100%;
+  max-width: 600px;
+  border-radius: 14px;
+  display: block;
+  margin: 40px auto;
+}
+
+/* SIDE BY SIDE IMAGES */
+.image-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.image-row img {
+  width: 48%;
+  max-width: 500px;
+  margin: 0;
+}
+
+/* INPUT */
+input[type="password"] {
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: none;
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+/* FADE */
+.fade-section {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease;
+}
+
+.fade-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* LOCK */
+#lockIcon {
+  display: inline-block;
+}
+
+.unlocking {
+  animation: shake 0.4s;
+}
+
+@keyframes shake {
+  0% { transform: rotate(0); }
+  25% { transform: rotate(-10deg); }
+  50% { transform: rotate(10deg); }
+  75% { transform: rotate(-6deg); }
+  100% { transform: rotate(0); }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .image-row {
+    flex-direction: column;
+  }
+
+  .image-row img {
+    width: 100%;
+  }
+
+  .wide-section {
+    padding: 70px 16px;
+  }
+
+  .wide-section h1 {
+    font-size: 32px;
+  }
+}
